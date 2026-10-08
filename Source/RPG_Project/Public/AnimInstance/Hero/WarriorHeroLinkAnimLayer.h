@@ -7,6 +7,7 @@
 #include "WarriorHeroLinkAnimLayer.generated.h"
 
 
+class UWarriorHeroAnimInstance;
 /**
  *
  */
@@ -14,5 +15,6 @@ UCLASS()
 class RPG_PROJECT_API UWarriorHeroLinkAnimLayer : public UWarriorBaseAnimInstance
 {
 	GENERATED_BODY()
-
+	UFUNCTION(BlueprintPure,meta=(BlueprintThreadSafe))
+	UWarriorHeroAnimInstance* GetHeroAnimInstance() const;
 };

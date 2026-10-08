@@ -14,7 +14,7 @@ public class RPG_Project : ModuleRules
 			"InputCore",
 			"EnhancedInput",
 			"GameplayTags",
-			"GameplayTasks",
+			"GameplayTasks"
 
 		});
 
