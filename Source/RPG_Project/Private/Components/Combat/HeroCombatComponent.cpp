@@ -3,3 +3,9 @@
 
 #include "Components/Combat/HeroCombatComponent.h"
 
+#include "Items/Weapon/WarriorHeroWeapon.h"
+
+AWarriorHeroWeapon* UHeroCombatComponent::GetHeroCarriedWeaponByTag(FGameplayTag InWeaponTag) const
+{
+	return  Cast<AWarriorHeroWeapon>(GetCharacterCarriedWeaponByTag(InWeaponTag));
+}
