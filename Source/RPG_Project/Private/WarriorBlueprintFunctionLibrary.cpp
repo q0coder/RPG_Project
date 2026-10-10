@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "WarriorBlueprintFunctionLibrary.h"
+
+#include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 
 UWarriorAbilitySystemComponent* UWarriorBlueprintFunctionLibrary::
