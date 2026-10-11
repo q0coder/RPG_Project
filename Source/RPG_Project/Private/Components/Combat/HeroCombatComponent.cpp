@@ -2,10 +2,38 @@
 
 
 #include "Components/Combat/HeroCombatComponent.h"
-
+#include "WarriorGamplayTag.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Items/Weapon/WarriorHeroWeapon.h"
 
 AWarriorHeroWeapon* UHeroCombatComponent::GetHeroCarriedWeaponByTag(FGameplayTag InWeaponTag) const
 {
 	return  Cast<AWarriorHeroWeapon>(GetCharacterCarriedWeaponByTag(InWeaponTag));
 }
+
+void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
+{
+	//利用OverlappingActors防止一次攻击可能对同一个对象产生的多次begin重叠被重复计算
+	if (OverlappingActors.Contains(HitActor))
+	{
+			return;
+	}
+	OverlappingActors.AddUnique(HitActor);
+
+	//FGameplayEventData,存储事件信息，用于SendGameplayEventToActor的第三个参数
+	FGameplayEventData Data;
+	Data.Instigator=GetOwningPawn();
+	Data.Target=HitActor;
+
+	//GAS 中用于从外部向指定 Actor 发送事件以触发其技能或逻辑的核心函数
+	//发送的对象ACtor必须存在ASC，若该 Actor 没有 ASC，事件将不会被发送。
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(), WarriorGameplayTags::Shared_Event_MeleeHit,Data);
+
+
+}
+
+void UHeroCombatComponent::OnWeaponPulledFromTargetActor(AActor* InteractedActor)
+{
+
+}
+

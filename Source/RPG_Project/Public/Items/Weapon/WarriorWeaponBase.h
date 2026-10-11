@@ -9,6 +9,8 @@
 
 class UBoxComponent;
 
+DECLARE_DELEGATE_OneParam(FOnTargetInterfaceDelegate,AActor*);
+
 UCLASS()
 class RPG_PROJECT_API AWarriorWeaponBase : public AActor
 {
@@ -17,6 +19,8 @@ class RPG_PROJECT_API AWarriorWeaponBase : public AActor
 public:
 	// Sets default values for this actor's properties
 	AWarriorWeaponBase();
+	FOnTargetInterfaceDelegate OnWeaponHitTarget;
+	FOnTargetInterfaceDelegate OnWeaponPulledFromTarget;
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly,BlueprintReadOnly,Category="Weapon")
@@ -24,6 +28,14 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly,BlueprintReadOnly,Category="Weapon")
 	UBoxComponent* WeaponCollisionBox;
+
+	//设计为虚函数，子类可能重写
+	//AddDynamic添加的回调函数必须是UFUNCTION的
+	UFUNCTION()
+	virtual void OnCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent,  AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+	UFUNCTION()
+	virtual void OnCollisionBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 public:
 	FORCEINLINE UBoxComponent* GetWeaponCollisionBox() const { return WeaponCollisionBox; }

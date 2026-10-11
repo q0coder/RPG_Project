@@ -5,14 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "WarriorTypes/WarriorEnumTypes.h"
 #include "WarriorBlueprintFunctionLibrary.generated.h"
 
-UENUM()
-enum class EWarriorConfirmType:uint8
-{
-	Yes,
-	No
-};
+class UPawnCombatComponent;
 class UWarriorAbilitySystemComponent;
 /**
  *
@@ -37,5 +33,11 @@ public:
 	//ExpandEnumAsExecs元数据说明符的作用是在编译时根据枚举的类型生成多个执行引脚
 	UFUNCTION(BlueprintCallable,Category="Warrior|FunctionLibrary",meta=(DisplayName="Does Actor Have Tag",ExpandEnumAsExecs="OutConfirmType"))
 	static void BP_DoesActorHaveTag(AActor* InActor, FGameplayTag TagToCheck,EWarriorConfirmType& OutConfirmType);
+
+	static UPawnCombatComponent* NativeGetPawnCombatComponent(AActor* InActor);
+
+	UFUNCTION(BlueprintCallable,Category="Warrior|FunctionLibrary",meta=(DisplayName="Get Pawn Combat Component From Actor",ExpandEnumAsExecs="OutValidType"))
+	static  UPawnCombatComponent* BP_GetPawnCombatComponentFromActor(AActor* InActor,EWarriorValidType& OutValidType);
+
 
 };

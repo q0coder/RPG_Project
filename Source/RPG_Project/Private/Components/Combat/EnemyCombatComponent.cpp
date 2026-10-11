@@ -3,3 +3,12 @@
 
 #include "Components/Combat/EnemyCombatComponent.h"
 
+void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
+{
+
+}
+
+void UEnemyCombatComponent::OnWeaponPulledFromTargetActor(AActor* InteractedActor)
+{
+
+}

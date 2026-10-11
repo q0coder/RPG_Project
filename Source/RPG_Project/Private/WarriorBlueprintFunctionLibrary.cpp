@@ -1,9 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "WarriorBlueprintFunctionLibrary.h"
-
+#include "Interface/PawnCombatInterface.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Interface/PawnCombatInterface.h"
 
 UWarriorAbilitySystemComponent* UWarriorBlueprintFunctionLibrary::
 NativeGetWarriorAbilitySystemComponentFromActor(AActor* InActor)
@@ -42,4 +43,25 @@ void UWarriorBlueprintFunctionLibrary::BP_DoesActorHaveTag(AActor* InActor, FGam
 	EWarriorConfirmType& OutConfirmType)
 {
 	OutConfirmType=NativeDoesActorHaveTag(InActor,TagToCheck)?EWarriorConfirmType::Yes:EWarriorConfirmType::No;
+}
+
+UPawnCombatComponent* UWarriorBlueprintFunctionLibrary::NativeGetPawnCombatComponent(AActor* InActor)
+{
+	check(InActor);
+
+	if (IPawnCombatInterface* PawnCombatInterface=Cast<IPawnCombatInterface>(InActor) )
+	{
+		return PawnCombatInterface->GetPawnCombatComponent();
+	}
+
+	return  nullptr;
+}
+
+UPawnCombatComponent* UWarriorBlueprintFunctionLibrary::BP_GetPawnCombatComponentFromActor(AActor* InActor,EWarriorValidType& OutValidType)
+{
+	UPawnCombatComponent* CombatComponent=NativeGetPawnCombatComponent(InActor);
+
+	OutValidType=CombatComponent?EWarriorValidType::Valid:EWarriorValidType::Invalid;
+
+	return CombatComponent;
 }

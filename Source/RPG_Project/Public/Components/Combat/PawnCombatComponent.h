@@ -8,6 +8,14 @@
 #include "Components/PawnExtensionComponentBase.h"
 #include "PawnCombatComponent.generated.h"
 
+//枚举，指定需要切换的武器的类型
+UENUM(BlueprintType)
+enum class EToggleDamageType:uint8
+{
+	CurrentEquipWeapon,
+	LeftHand,
+	RightHand
+};
 
 class AWarriorWeaponBase;
 /**
@@ -33,7 +41,18 @@ public :
 	//获取角色当前装备的武器
 	UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
 	AWarriorWeaponBase* GetCharacterCurrentEquippedWeapon() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Warrior|Combat")
+	void ToggleWeaponCollision(bool bShouldEnable,EToggleDamageType ToggleDamageType=EToggleDamageType::CurrentEquipWeapon);
+
+	virtual void OnHitTargetActor(AActor* HitActor);
+	virtual void OnWeaponPulledFromTargetActor(AActor* InteractedActor);
+protected:
+
+	TArray<AActor*> OverlappingActors;
+
+
 private:
-	//GamplayTag与武器类的映射（包括玩家与敌人的武器）
+	//GameplayTag与武器类的映射（包括玩家与敌人的武器）
 	TMap<FGameplayTag, AWarriorWeaponBase*> CharacterCarriedWeaponMap;
 };

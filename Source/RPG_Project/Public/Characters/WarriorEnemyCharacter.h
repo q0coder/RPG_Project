@@ -16,10 +16,16 @@ class RPG_PROJECT_API AWarriorEnemyCharacter : public AWarriorBaseCharacter
 	GENERATED_BODY()
 public:
 	AWarriorEnemyCharacter();
+	//~ Begin PawnCombatInterface Interface.
+	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
+	//~ End PawnCombatInterface Interface
 protected:
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End APawn Interface
+
+
+
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Combat")
 	UEnemyCombatComponent* EnemyCombatComponent;
 private:

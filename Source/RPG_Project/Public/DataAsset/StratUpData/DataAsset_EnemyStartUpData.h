@@ -22,4 +22,5 @@ private:
 	UPROPERTY(EditDefaultsOnly,Category="StartUpData")
 	TArray<TSubclassOf<UWarriorEnemyGameplayAbility>> EnemyCombatAbilities;
 
+
 };

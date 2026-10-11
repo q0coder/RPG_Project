@@ -25,6 +25,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<FGameplayAbilitySpecHandle> GetGrantedAbilitySpecHandles() const;
 
+
+
 private:
 	TArray<FGameplayAbilitySpecHandle> GrantedAbilitySpecHandles;
 
