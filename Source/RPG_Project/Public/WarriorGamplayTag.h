@@ -27,6 +27,9 @@ namespace WarriorGameplayTags
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Axe);
 
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy);
+
 
 	/** Enemy Tag**/
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
@@ -34,6 +37,7 @@ namespace WarriorGameplayTags
 	/** Shared Tag**/
 
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
 
 
 

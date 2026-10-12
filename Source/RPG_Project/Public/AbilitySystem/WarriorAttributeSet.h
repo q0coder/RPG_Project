@@ -47,6 +47,11 @@ public:
 	FGameplayAttributeData DefencePower;
 	ATTRIBUTE_ACCESSORS(UWarriorAttributeSet,DefencePower);
 
+	UPROPERTY(BlueprintReadOnly,Category="Damage")
+	FGameplayAttributeData DamageTaken;
+	ATTRIBUTE_ACCESSORS(UWarriorAttributeSet,DamageTaken)
 
+	//属性值变化时调用一次，本质是一个回调函数，用于应用修改，处理属性修改后的逻辑（如死亡）
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
 
 };

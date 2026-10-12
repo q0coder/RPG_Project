@@ -11,6 +11,17 @@ AWarriorHeroWeapon* UHeroCombatComponent::GetHeroCarriedWeaponByTag(FGameplayTag
 	return  Cast<AWarriorHeroWeapon>(GetCharacterCarriedWeaponByTag(InWeaponTag));
 }
 
+AWarriorHeroWeapon* UHeroCombatComponent::GetHeroCurrentEquipWeapon() const
+{
+	return  Cast<AWarriorHeroWeapon>(GetCharacterCurrentEquippedWeapon());
+}
+
+float UHeroCombatComponent::GetHeroCurrentEquipWeaponDamageAtLevel(float InLevel) const
+{
+	//FScalableFloat::GetValueAtLevel 是 GAS 中用于根据等级从曲线表（Curve Table）中动态计算数值的核心函数
+	return GetHeroCurrentEquipWeapon()->HeroWeaponData.WeaponBaseDamage.GetValueAtLevel(InLevel);
+}
+
 void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
 {
 	//利用OverlappingActors防止一次攻击可能对同一个对象产生的多次begin重叠被重复计算

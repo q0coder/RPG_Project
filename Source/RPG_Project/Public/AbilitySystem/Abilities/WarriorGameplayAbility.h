@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "WarriorTypes/WarriorEnumTypes.h"
 #include "WarriorGameplayAbility.generated.h"
 
 class UWarriorAbilitySystemComponent;
@@ -37,5 +38,10 @@ protected:
 	//从GameAbility的ActorInfo中获取ASC。
 	UFUNCTION(BlueprintPure, Category="WarriorAbility")
 	UWarriorAbilitySystemComponent* GetWarriorAbilitySystemComponentFromActorInfo() const;
+
+	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor,const FGameplayEffectSpecHandle& InSpecHandle);
+
+	UFUNCTION(BlueprintCallable,Category="WarriorAbility",meta=(DisplayName="Apply Gameplay Effect Spec Handle To Target Actor",ExpandEnumAsExecs="OutSuccessType"))
+	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor,const FGameplayEffectSpecHandle& InSpecHandle,EWarriorSuccessType& OutSuccessType);
 
 };

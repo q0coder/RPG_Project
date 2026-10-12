@@ -16,3 +16,9 @@ enum class EWarriorValidType:uint8
 	Invalid
 };
 
+UENUM()
+enum class EWarriorSuccessType:uint8
+{
+	Successful,
+	Failed
+};
