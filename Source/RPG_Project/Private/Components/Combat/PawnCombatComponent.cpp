@@ -2,7 +2,6 @@
 
 
 #include "Components/Combat/PawnCombatComponent.h"
-
 #include "Components/BoxComponent.h"
 #include "Items/Weapon/WarriorWeaponBase.h"
 
@@ -47,21 +46,27 @@ AWarriorWeaponBase* UPawnCombatComponent::GetCharacterCurrentEquippedWeapon() co
 
 void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
 {
-	AWarriorWeaponBase* WeaponToToggle=GetCharacterCurrentEquippedWeapon();
-
-	check(WeaponToToggle);
-
-	if (bShouldEnable)
+	if (ToggleDamageType==EToggleDamageType::CurrentEquipWeapon)
 	{
-		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		AWarriorWeaponBase* WeaponToToggle=GetCharacterCurrentEquippedWeapon();
 
-	}
-	else
-	{
-		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		OverlappingActors.Empty();
+		check(WeaponToToggle);
 
+		if (bShouldEnable)
+		{
+
+			WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+
+		}
+		else
+		{
+			WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			OverlappingActors.Empty();
+
+		}
 	}
+
 }
 
 void UPawnCombatComponent::OnHitTargetActor(AActor* HitActor)

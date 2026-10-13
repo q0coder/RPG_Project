@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/GEExecCal/GEExecCalc_DamageTaken.h"
 
+
 #include "WarriorGamplayTag.h"
 #include "AbilitySystem/WarriorAttributeSet.h"
 
@@ -112,8 +113,10 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 
 	}
 
+
+
 	float TargetDefencePower=0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeBonusMagnitude(GetWarriorDamageCapture().DefencePowerDef,EvaluateParameters,TargetDefencePower);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetWarriorDamageCapture().DefencePowerDef,EvaluateParameters,TargetDefencePower);
 
 	if (UsedLightComboCount!=0)
 	{

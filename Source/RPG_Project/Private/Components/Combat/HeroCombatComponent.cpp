@@ -2,9 +2,11 @@
 
 
 #include "Components/Combat/HeroCombatComponent.h"
+
 #include "WarriorGamplayTag.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Items/Weapon/WarriorHeroWeapon.h"
+#include "WarriorTypes/WArriorStructTypes.h"
 
 AWarriorHeroWeapon* UHeroCombatComponent::GetHeroCarriedWeaponByTag(FGameplayTag InWeaponTag) const
 {
@@ -24,6 +26,7 @@ float UHeroCombatComponent::GetHeroCurrentEquipWeaponDamageAtLevel(float InLevel
 
 void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
 {
+
 	//利用OverlappingActors防止一次攻击可能对同一个对象产生的多次begin重叠被重复计算
 	if (OverlappingActors.Contains(HitActor))
 	{

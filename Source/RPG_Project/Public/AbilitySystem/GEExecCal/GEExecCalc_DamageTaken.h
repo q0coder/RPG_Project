@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffectExecutionCalculation.h"
+
 #include "GEExecCalc_DamageTaken.generated.h"
 
 /**
