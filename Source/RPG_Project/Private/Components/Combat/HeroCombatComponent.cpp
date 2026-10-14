@@ -43,11 +43,16 @@ void UHeroCombatComponent::OnHitTargetActor(AActor* HitActor)
 	//发送的对象ACtor必须存在ASC，若该 Actor 没有 ASC，事件将不会被发送。
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(), WarriorGameplayTags::Shared_Event_MeleeHit,Data);
 
+	//FGameplayEventData(),结构体的空构造，表示不存储任何信息
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(), WarriorGameplayTags::Player_Event_HitPause,FGameplayEventData());
+
+
 
 }
 
 void UHeroCombatComponent::OnWeaponPulledFromTargetActor(AActor* InteractedActor)
 {
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(), WarriorGameplayTags::Player_Event_HitPause,FGameplayEventData());
 
 }
 
