@@ -2,8 +2,11 @@
 
 
 #include "AbilitySystem/WarriorAttributeSet.h"
+#include "WarriorDebugHelper.h"
 
 #include "GameplayEffectExtension.h"
+#include "WarriorBlueprintFunctionLibrary.h"
+#include "WarriorGamplayTag.h"
 
 UWarriorAttributeSet::UWarriorAttributeSet()
 {
@@ -23,6 +26,9 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffec
 	if (Data.EvaluatedData.Attribute==GetCurrentHealthAttribute())
 	{
 		const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth(),0.f,GetMaxHealth());
+
+
+
 		SetCurrentHealth(NewCurrentHealth);
 	}
 
@@ -33,11 +39,22 @@ void UWarriorAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffec
 	}
 	if (Data.EvaluatedData.Attribute==GetDamageTakenAttribute())
 	{
+
+
 		const float OldHealth = GetCurrentHealth();
 		const float DamageDone=GetDamageTaken();
 
+
 		const float NewCurrentHealth = FMath::Clamp(OldHealth-DamageDone,0.f,GetMaxHealth());
 		SetCurrentHealth(NewCurrentHealth);
+
+		if (NewCurrentHealth==0.f)
+		{
+			UWarriorBlueprintFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(),WarriorGameplayTags::Shared_Status_Death);
+		}
+
 	}
+
+
 
 }

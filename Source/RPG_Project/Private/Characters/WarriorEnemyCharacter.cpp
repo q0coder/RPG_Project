@@ -31,7 +31,7 @@ AWarriorEnemyCharacter::AWarriorEnemyCharacter()
 	//UE为角色设定了默认的加速度与减速度为2048
 	GetCharacterMovement()->BrakingDecelerationWalking=1000.f;
 
-	CreateDefaultSubobject<UEnemyCombatComponent>("EnemyCombatComponent");
+	EnemyCombatComponent=CreateDefaultSubobject<UEnemyCombatComponent>(TEXT("EnemyCombatComponent"));
 
 }
 
