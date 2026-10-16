@@ -9,6 +9,7 @@
 
 #include "WarriorHeroCharacter.generated.h"
 
+class UHeroUIComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UDataAsset_InputConfig;
@@ -26,6 +27,15 @@ public:
 	//~ Begin PawnCombatInterface Interface.
 	virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
 	//~ End PawnCombatInterface Interface
+
+	//~ Begin PawnUIInterface Interface.
+	virtual  UPawnUIComponent* GetPawnUIComponent() const override;
+	//~ End PawnUIInterface Interface
+
+	//~ Begin PawnUIInterface Interface.
+	virtual  UHeroUIComponent* GetHeroUIComponent() const override;
+	//~ End PawnUIInterface Interface
+
 protected:
 
 	//~ Begin APawn Interface.
@@ -44,6 +54,8 @@ private:
 	 UCameraComponent* FollowCamera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	 UHeroCombatComponent* HeroCombatComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
+	UHeroUIComponent* HeroUIComponent;
 
 #pragma endregion
 

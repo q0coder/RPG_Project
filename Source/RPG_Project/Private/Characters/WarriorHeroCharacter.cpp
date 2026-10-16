@@ -15,6 +15,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/Combat/HeroCombatComponent.h"
+#include "Components/UI/HeroUIComponent.h"
 
 AWarriorHeroCharacter::AWarriorHeroCharacter()
 {
@@ -46,7 +47,7 @@ AWarriorHeroCharacter::AWarriorHeroCharacter()
 
 
 	HeroCombatComponent=CreateDefaultSubobject<UHeroCombatComponent>(TEXT("HeroCombatComponent"));
-
+	HeroUIComponent=CreateDefaultSubobject<UHeroUIComponent>(TEXT("HeroUIComponent"));
 
 }
 
@@ -67,6 +68,16 @@ UPawnCombatComponent* AWarriorHeroCharacter::GetPawnCombatComponent() const
 
 	return HeroCombatComponent;
 
+}
+
+UPawnUIComponent* AWarriorHeroCharacter::GetPawnUIComponent() const
+{
+	return HeroUIComponent;
+}
+
+UHeroUIComponent* AWarriorHeroCharacter::GetHeroUIComponent() const
+{
+	return HeroUIComponent;
 }
 
 
