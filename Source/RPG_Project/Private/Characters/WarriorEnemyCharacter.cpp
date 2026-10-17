@@ -2,7 +2,8 @@
 
 
 #include "Characters/WarriorEnemyCharacter.h"
-
+#include "Widgets/WarriorWidgetBase.h"
+#include "Components/WidgetComponent.h"
 #include "Components/Combat/EnemyCombatComponent.h"
 #include "Components/UI/EnemyUIComponent.h"
 #include "DataAsset/StratUpData/DataAsset_StartUpDataBase.h"
@@ -33,8 +34,9 @@ AWarriorEnemyCharacter::AWarriorEnemyCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking=1000.f;
 
 	EnemyCombatComponent=CreateDefaultSubobject<UEnemyCombatComponent>(TEXT("EnemyCombatComponent"));
-	EnemyUIComponent=CreateDefaultSubobject<UEnemyUIComponent>(TEXT("UEnemyUIComponent"));
-
+	EnemyUIComponent=CreateDefaultSubobject<UEnemyUIComponent>(TEXT("EnemyUIComponent"));
+	EnemyHealthWidgetComponent=CreateDefaultSubobject<UWidgetComponent>(TEXT("EnemyHealthWidgetComponent"));
+	EnemyHealthWidgetComponent->SetupAttachment(GetMesh());
 
 }
 
@@ -58,6 +60,16 @@ UPawnUIComponent* AWarriorEnemyCharacter::GetPawnUIComponent() const
 UEnemyUIComponent* AWarriorEnemyCharacter::GetEnemyUIComponent() const
 {
 	return EnemyUIComponent;
+}
+
+void AWarriorEnemyCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	if (UWarriorWidgetBase* HealthWidget=Cast<UWarriorWidgetBase>(EnemyHealthWidgetComponent->GetUserWidgetObject()))
+	{
+		HealthWidget->InitEnemyCreateWidget(this);
+	}
+
 }
 
 void AWarriorEnemyCharacter::InitEnemyStartUpData()

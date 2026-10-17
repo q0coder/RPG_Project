@@ -15,7 +15,6 @@ public class RPG_Project : ModuleRules
 			"EnhancedInput",
 			"GameplayTags",
 			"GameplayTasks"
-
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

@@ -6,6 +6,8 @@
 #include "Components/UI/PawnUIComponent.h"
 #include "HeroUIComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEquipWeaponChangedDelegate,TSoftObjectPtr<UTexture2D>,SoftWeaponIconTexture);
+
 /**
  *
  */
@@ -16,5 +18,9 @@ class RPG_PROJECT_API UHeroUIComponent : public UPawnUIComponent
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPersentChangedDelegate OnCurrentRageChanged;
+	//在蓝图在可调用，在蓝图的装备与卸下武器中进行广播
+	UPROPERTY(BlueprintCallable,BlueprintAssignable)
+	FOnEquipWeaponChangedDelegate OnEquipWeaponChanged;
+
 
 };
