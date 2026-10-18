@@ -2,7 +2,11 @@
 
 
 #include "Controler/WarriorAIController.h"
+
+#include <strmif.h>
+
 #include "WarriorDebugHelper.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Navigation/CrowdFollowingComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -69,8 +73,51 @@ ETeamAttitude::Type AWarriorAIController::GetTeamAttitudeTowards(const AActor& O
 	return  ETeamAttitude::Friendly;
 }
 
+void AWarriorAIController::BeginPlay()
+{
+	Super::BeginPlay();
+	if (UCrowdFollowingComponent* CrowdComponent=Cast<UCrowdFollowingComponent>(GetPathFollowingComponent()))
+	{
+		//设置避障模拟开关，决定这个 AI 是否参与群体避障计算。
+		CrowdComponent->SetCrowdSimulationState(bEnableDetourCrowdAvoidance?ECrowdSimulationState::Enabled:ECrowdSimulationState::Disabled);
+		//选择避障质量（四种，越高越消耗CPU性能）
+		switch (DetourCrowdAvoidanceQuality)
+		{
+		case 1:
+		CrowdComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Low);break;
+
+		case 2:
+		CrowdComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Medium);break;
+
+		case 3:
+		CrowdComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::Good);break;
+
+		case 4:
+		CrowdComponent->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::High);break;
+
+		default:break;
+		}
+		//设置所属避障组告诉系统这个 AI 属于哪个阵营/组别，这里实际上使用的是位掩码
+		CrowdComponent->SetAvoidanceGroup(1);
+		//设置一个避开的组告诉系统这个 AI 在移动时需要避开哪些组的成员。
+		CrowdComponent->SetGroupsToAvoid(1);
+		//设置碰撞查询范围设置 AI 在避障时向周围“看”多远
+		CrowdComponent->SetCrowdCollisionQueryRange(CollisionQueryRange);
+
+
+	}
+}
+
 void AWarriorAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-
+	if (Stimulus.WasSuccessfullySensed()&&Actor)
+	{
+		if (UBlackboardComponent* BlackboardComponent=GetBlackboardComponent())
+		{
+			//设置BlackBoard中对应类型的键的值，参数接收一个键名和一个值（键名必须与BlackBoard中定义的相同，值必须为定义的键的基类类型）
+			//BlackBoard的基类选项作用就是限制该 Object 键只能存储特定类型的对象
+			BlackboardComponent->SetValueAsObject(FName("TargetActor"),Actor);
+		}
+	}
 
 }
