@@ -59,3 +59,29 @@ void UWarriorAbilitySystemComponent::RemoveGrantedHeroWeaponAbilities(
 		InSpecHandlesToRemove.Empty();
 	}
 }
+
+bool UWarriorAbilitySystemComponent::TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate)
+{
+	check(AbilityTagToActivate.IsValid());
+
+	TArray<FGameplayAbilitySpec*> FoundAbilitySpecs;
+
+
+	//作用是找出包含此容器中所有标签的Ability Spec，参数1为标签容器，参数2找到的可激活技能的Spec
+	GetActivatableGameplayAbilitySpecsByAllMatchingTags(AbilityTagToActivate.GetSingleTagContainer(),FoundAbilitySpecs);
+
+	if (FoundAbilitySpecs.IsEmpty())
+	{
+		const int32 RandomAbilityIndex=FMath::RandRange(0,FoundAbilitySpecs.Num()-1);
+		FGameplayAbilitySpec* SpecToActivate=FoundAbilitySpecs[RandomAbilityIndex];
+
+		check(SpecToActivate);
+		if (!SpecToActivate->IsActive())
+		{
+			//TryActivateAbility通过技能句柄激活技能
+			return  TryActivateAbility(SpecToActivate->Handle);
+		}
+
+	}
+	return false;
+}

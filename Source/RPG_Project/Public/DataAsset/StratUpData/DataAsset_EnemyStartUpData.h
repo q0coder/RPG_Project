@@ -16,7 +16,7 @@ class RPG_PROJECT_API UDataAsset_EnemyStartUpData : public UDataAsset_StartUpDat
 	GENERATED_BODY()
 
 public :
-virtual void GiveToAbilitySystemComponent(UWarriorAbilitySystemComponent* InASCToGive,int32 ApplyLevel=1) ;
+virtual void GiveToAbilitySystemComponent(UWarriorAbilitySystemComponent* InASCToGive,int32 ApplyLevel=1) override;
 
 private:
 	UPROPERTY(EditDefaultsOnly,Category="StartUpData")

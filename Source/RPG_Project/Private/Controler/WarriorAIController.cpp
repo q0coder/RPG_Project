@@ -61,8 +61,10 @@ ETeamAttitude::Type AWarriorAIController::GetTeamAttitudeTowards(const AActor& O
 	const IGenericTeamAgentInterface* OtherTeamAgent=Cast<const IGenericTeamAgentInterface>(PawnToCheck->GetController());
 
 
-	//如果玩家（Other）与敌人的TeamId不同，那么判定玩家为我们敌人的敌人
-	if (OtherTeamAgent&&OtherTeamAgent->GetGenericTeamId()!=GetGenericTeamId())
+	//如果玩家ID（Other,0）与敌人的TeamId(1)，玩家Id小于敌人，那么玩家就被判定为敌人的敌人
+	//修改不使用！=的原因是因为EQS 本身不是 Actor，但是 EQS的测试Pawn类会被感知（引擎对于所有的Pawn类都会默认注册为刺激源），如果没有对其分配Id，默认的NoTeamID=255
+	//NoTeamID并不是所有的Actor都默认的TeamID，只有当某个对象参与 TeamID 判断、且它没有有效 TeamID 时，语义上视为 NoTeam。
+	if (OtherTeamAgent&&OtherTeamAgent->GetGenericTeamId()<GetGenericTeamId())
 	{
 
 		return  ETeamAttitude::Hostile;
@@ -110,14 +112,22 @@ void AWarriorAIController::BeginPlay()
 
 void AWarriorAIController::OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	if (Stimulus.WasSuccessfullySensed()&&Actor)
-	{
+
 		if (UBlackboardComponent* BlackboardComponent=GetBlackboardComponent())
 		{
-			//设置BlackBoard中对应类型的键的值，参数接收一个键名和一个值（键名必须与BlackBoard中定义的相同，值必须为定义的键的基类类型）
-			//BlackBoard的基类选项作用就是限制该 Object 键只能存储特定类型的对象
-			BlackboardComponent->SetValueAsObject(FName("TargetActor"),Actor);
+			//只有在值未设置时会继续值的设置，不会在每次调用时都重新设置
+			if (!BlackboardComponent->GetValueAsObject(FName("TargetActor")))
+			{
+				//Stimulus.WasSuccessfullySensed()用于判断一次感知刺激当前是否被成功感知，返回一个 bool 值。
+				if (Stimulus.WasSuccessfullySensed()&&Actor)
+				{
+					//设置BlackBoard中对应类型的键的值，参数接收一个键名和一个值（键名必须与BlackBoard中定义的相同，值必须为定义的键的基类类型）
+					//BlackBoard的基类选项作用就是限制该 Object 键只能存储特定类型的对象
+					BlackboardComponent->SetValueAsObject(FName("TargetActor"),Actor);
+				}
+			}
+
 		}
-	}
+
 
 }
