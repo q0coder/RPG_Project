@@ -23,6 +23,10 @@ public:
 	UFUNCTION(BlueprintPure, Category="WarriorAbility")
 	UEnemyCombatComponent* GetEnemyCombatComponentFromActorInfo() ;
 
+	UFUNCTION(BlueprintPure, Category="WarriorAbility")
+	FGameplayEffectSpecHandle MakeEnemyDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass,const FScalableFloat& InDamageFScalableFloat);
+
+
 private:
 	//CachedWarriorEnemyCharacter弱引用不应该影响AWarriorEnemyCharacter的销毁
 	TWeakObjectPtr<AWarriorEnemyCharacter> CachedWarriorEnemyCharacter;

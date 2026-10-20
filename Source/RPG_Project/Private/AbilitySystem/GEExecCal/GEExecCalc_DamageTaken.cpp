@@ -132,6 +132,7 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 
 	const float FinalDamage=BaseDamage*SourceAttackPower/TargetDefencePower;
 
+
 	if (FinalDamage>0.f)
 	{
 		//FGameplayModifierEvaluatedData是一个用于描述属性修改结果的核心结构体，通常用于OutExecutionOutput.AddOutputModifier()

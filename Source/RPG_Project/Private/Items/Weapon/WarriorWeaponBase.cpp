@@ -2,6 +2,8 @@
 
 
 #include "Items/Weapon/WarriorWeaponBase.h"
+
+#include "WarriorBlueprintFunctionLibrary.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values
@@ -35,11 +37,12 @@ void AWarriorWeaponBase::OnCollisionBoxBeginOverlap(UPrimitiveComponent* Overlap
 
 	if (APawn* HitPawn=Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn!=HitPawn)
+
+		//对于敌人而言，除了要求不能碰撞到自身之外，必须不能碰撞到敌人的友方,该逻辑同时适用于玩家与敌人
+		if (UWarriorBlueprintFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn,HitPawn))
 		{
-
-
 			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
+
 		}
 	}
 }
@@ -58,18 +61,16 @@ void AWarriorWeaponBase::OnCollisionBoxEndOverlap(UPrimitiveComponent* Overlappe
 	APawn* WeaponOwningPawn=GetInstigator<APawn>();
 
 	checkf(WeaponOwningPawn,TEXT("Forget to assign an instigator as the owning pawn for the weapon: %s "),*GetName());
-
 	if (APawn* HitPawn=Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn!=HitPawn)
+
+		//对于敌人而言，除了要求不能碰撞到自身之外，必须不能碰撞到敌人的友方
+		if (UWarriorBlueprintFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn,HitPawn))
 		{
-
-
-			OnWeaponPulledFromTarget.ExecuteIfBound(OtherActor);
+			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
 
 		}
 	}
-
 }
 
 

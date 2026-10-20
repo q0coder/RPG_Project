@@ -4,6 +4,7 @@
 #include "Interface/PawnCombatInterface.h"
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GenericTeamAgentInterface.h"
 #include "Interface/PawnCombatInterface.h"
 
 UWarriorAbilitySystemComponent* UWarriorBlueprintFunctionLibrary::
@@ -65,3 +66,20 @@ UPawnCombatComponent* UWarriorBlueprintFunctionLibrary::BP_GetPawnCombatComponen
 
 	return CombatComponent;
 }
+
+bool UWarriorBlueprintFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn)
+ {
+	check(QueryPawn&& TargetPawn);
+
+	const IGenericTeamAgentInterface* QueryTeamAgent=Cast<const IGenericTeamAgentInterface>(QueryPawn->GetController());
+
+	const IGenericTeamAgentInterface* TargetTeamAgent=Cast<const IGenericTeamAgentInterface>(TargetPawn->GetController());
+
+	if (QueryTeamAgent&&TargetTeamAgent)
+	{
+		return QueryTeamAgent->GetGenericTeamId()!=TargetTeamAgent->GetGenericTeamId();
+	}
+
+	return false;
+
+ }

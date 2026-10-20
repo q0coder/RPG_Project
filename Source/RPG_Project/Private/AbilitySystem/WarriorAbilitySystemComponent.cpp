@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/WarriorGameplayAbility.h"
+#include  "WarriorDebugHelper.h"
 void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()){return;}
@@ -70,18 +71,21 @@ bool UWarriorAbilitySystemComponent::TryActivateAbilityByTag(FGameplayTag Abilit
 	//作用是找出包含此容器中所有标签的Ability Spec，参数1为标签容器，参数2找到的可激活技能的Spec
 	GetActivatableGameplayAbilitySpecsByAllMatchingTags(AbilityTagToActivate.GetSingleTagContainer(),FoundAbilitySpecs);
 
-	if (FoundAbilitySpecs.IsEmpty())
+	if (!FoundAbilitySpecs.IsEmpty())
 	{
+
 		const int32 RandomAbilityIndex=FMath::RandRange(0,FoundAbilitySpecs.Num()-1);
 		FGameplayAbilitySpec* SpecToActivate=FoundAbilitySpecs[RandomAbilityIndex];
 
 		check(SpecToActivate);
 		if (!SpecToActivate->IsActive())
 		{
+
 			//TryActivateAbility通过技能句柄激活技能
 			return  TryActivateAbility(SpecToActivate->Handle);
 		}
 
 	}
+
 	return false;
 }
