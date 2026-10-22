@@ -8,8 +8,10 @@
 #include "WarriorTypes/WarriorEnumTypes.h"
 #include "WarriorBlueprintFunctionLibrary.generated.h"
 
+struct FScalableFloat;
 class UPawnCombatComponent;
 class UWarriorAbilitySystemComponent;
+
 /**
  *
  */
@@ -41,6 +43,10 @@ public:
 
 	UFUNCTION(BlueprintPure,Category="Warrior|FunctionLibrary")
 	static  bool IsTargetPawnHostile(APawn* QueryPawn,APawn* TargetPawn) ;
+
+	//meta=(CompactNodeTitle，元数据说明符常与BlueprintPure或BlueprintCallable 联用，用于将蓝图中的函数节点简化
+	UFUNCTION(BlueprintPure,Category="Warrior|FunctionLibrary",meta=(CompactNodeTitle="Get Value At Level"))
+	static float GetScalableFloatValueAtLevel(const FScalableFloat& InScalableFloat,float InLevel=1.f);
 
 
 };
