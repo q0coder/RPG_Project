@@ -4,6 +4,8 @@
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/WarriorGameplayAbility.h"
 #include  "WarriorDebugHelper.h"
+#include "WarriorGamplayTag.h"
+
 void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()){return;}
@@ -19,6 +21,27 @@ void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& I
 
 void UWarriorAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InputTag)
 {
+	//MatchesTag与HasTag的区别，MatchesTag会进行层级匹配，针对单个标签,只有是子标签就会返回true
+	//HasTag针对标签容器，查找容器中是否存在对应标签
+	if (!InputTag.IsValid()&&!InputTag.MatchesTag(WarriorGameplayTags::InputTag_MustBeHeld))
+	{
+		return;
+	}
+
+	//DynamicAbilityTags（动态）：定义在 AbilitySpec 上，允许你为每个技能实例附加额外的标签。
+	//例如，同一个“攻击”技能，实例A可以是 Ability.Attack.Fire，实例B可以是 Ability.Attack.Ice
+
+
+	for (const FGameplayAbilitySpec& AbilitySpec:GetActivatableAbilities())
+	{
+		if (AbilitySpec.GetDynamicSpecSourceTags().HasTag(InputTag)&&AbilitySpec.IsActive())
+		{
+			//CancelAbilityHandle作用是取消一个技能，属于ASC，可以在GA的外部取消技能，玩家受击了需要打断当前施法（被动、强制中断）
+			//End Ability也能取消技能，属于GA，一般用于技能成功命中敌人（主动、正常下班）
+			//EndAbility 是技能对自己说“我干完了”，而 CancelAbility 是系统对技能说“你别干了”。
+			CancelAbilityHandle(AbilitySpec.Handle);
+		}
+	}
 
 }
 
