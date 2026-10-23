@@ -22,8 +22,10 @@ void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& I
 void UWarriorAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InputTag)
 {
 	//MatchesTag与HasTag的区别，MatchesTag会进行层级匹配，针对单个标签,只有是子标签就会返回true
-	//HasTag针对标签容器，查找容器中是否存在对应标签
-	if (!InputTag.IsValid()&&!InputTag.MatchesTag(WarriorGameplayTags::InputTag_MustBeHeld))
+	//HasTag针对标签容器，查找容器中是否存在对应标签或者其子标签，为层级匹配
+	//HasTagExact才是精确匹配
+	//这里的判断作用是将非长按的输入返回，防止非长按的输入进入下面后产生按下就取消的情况
+	if (!InputTag.IsValid()||!InputTag.MatchesTag(WarriorGameplayTags::InputTag_MustBeHeld))
 	{
 		return;
 	}
@@ -34,7 +36,7 @@ void UWarriorAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& 
 
 	for (const FGameplayAbilitySpec& AbilitySpec:GetActivatableAbilities())
 	{
-		if (AbilitySpec.GetDynamicSpecSourceTags().HasTag(InputTag)&&AbilitySpec.IsActive())
+		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag)&&AbilitySpec.IsActive())
 		{
 			//CancelAbilityHandle作用是取消一个技能，属于ASC，可以在GA的外部取消技能，玩家受击了需要打断当前施法（被动、强制中断）
 			//End Ability也能取消技能，属于GA，一般用于技能成功命中敌人（主动、正常下班）

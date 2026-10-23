@@ -5,6 +5,7 @@
 #include "AbilitySystem/WarriorAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GenericTeamAgentInterface.h"
+#include "WarriorDebugHelper.h"
 #include "WarriorGamplayTag.h"
 #include "Interface/PawnCombatInterface.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -125,4 +126,18 @@ FGameplayTag UWarriorBlueprintFunctionLibrary::ComputeReactDirectionTag(AActor* 
 	{
 		return WarriorGameplayTags::Shared_Status_HitReact_Back;
 	}
+}
+
+bool UWarriorBlueprintFunctionLibrary::IsBlockValid(const AActor* InAttacker,const AActor* InDefender)
+{
+	check(InAttacker&&InDefender);
+	float DotResult=FVector::DotProduct(InAttacker->GetActorForwardVector(),InDefender->GetActorForwardVector());
+	//DegAcos返回的值的范围是0~180
+	float OutAngleDifference= UKismetMathLibrary::DegAcos(DotResult);
+
+	if (OutAngleDifference<=180.f&&OutAngleDifference>=150.f)
+	{
+		return true;
+	}
+	return false;
 }
