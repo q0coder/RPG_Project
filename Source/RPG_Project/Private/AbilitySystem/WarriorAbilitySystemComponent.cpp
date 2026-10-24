@@ -8,13 +8,34 @@
 
 void UWarriorAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputTag)
 {
+
 	if (!InputTag.IsValid()){return;}
 
 	for (const FGameplayAbilitySpec& AbilitySpec:GetActivatableAbilities())
 	{
+
+
 		if (!AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag)) continue;
 
-		TryActivateAbility(AbilitySpec.Handle);
+		if (InputTag.MatchesTag(WarriorGameplayTags::InputTag_Toggleable))
+		{
+			if (AbilitySpec.IsActive())
+			{
+
+				CancelAbilityHandle(AbilitySpec.Handle);
+			}
+			else
+			{
+
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+		else
+		{
+
+
+			TryActivateAbility(AbilitySpec.Handle);
+		}
 
 	}
 }
@@ -38,6 +59,7 @@ void UWarriorAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& 
 	{
 		if (AbilitySpec.GetDynamicSpecSourceTags().HasTagExact(InputTag)&&AbilitySpec.IsActive())
 		{
+
 			//CancelAbilityHandle作用是取消一个技能，属于ASC，可以在GA的外部取消技能，玩家受击了需要打断当前施法（被动、强制中断）
 			//End Ability也能取消技能，属于GA，一般用于技能成功命中敌人（主动、正常下班）
 			//EndAbility 是技能对自己说“我干完了”，而 CancelAbility 是系统对技能说“你别干了”。
@@ -61,7 +83,6 @@ void UWarriorAbilitySystemComponent::GrantHeroWeaponAbility(
 		AbilitySpec.Level=ApplyLevel;
 		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
 
-		GiveAbility(AbilitySpec);
 
 		OnGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
 
