@@ -122,16 +122,19 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 	{
 		const float DamageIncreasePercentLight=(UsedLightComboCount-1)*0.05+1.f;
 		BaseDamage*=DamageIncreasePercentLight;
+
 	}
 
 	if (UsedHeavyComboCount!=0)
 	{
+
+
 		const float DamageIncreasePercentHeavy=UsedHeavyComboCount*0.15+1.f;
 		BaseDamage*=DamageIncreasePercentHeavy;
+
 	}
 
 	const float FinalDamage=BaseDamage*SourceAttackPower/TargetDefencePower;
-
 
 	if (FinalDamage>0.f)
 	{

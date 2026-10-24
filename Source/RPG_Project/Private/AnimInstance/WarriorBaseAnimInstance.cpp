@@ -5,7 +5,7 @@
 
 #include "WarriorBlueprintFunctionLibrary.h"
 
-bool UWarriorBaseAnimInstance::DoesOwnerHaveTag(FGameplayTag TagToCheck)
+bool UWarriorBaseAnimInstance::DoesOwnerHaveTag(FGameplayTag TagToCheck) const
 {
 	if (APawn* OwningPawn=TryGetPawnOwner())
 	{
