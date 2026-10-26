@@ -23,7 +23,7 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 	//玩家是否格挡
 	const bool bIsPlayerBlocking=UWarriorBlueprintFunctionLibrary::NativeDoesActorHaveTag(HitActor,WarriorGameplayTags::Player_Status_Block);
 	//敌人攻击是否能够格挡
-	const bool bIsMyAttackUnBlockable=false;
+	const bool bIsMyAttackUnBlockable=UWarriorBlueprintFunctionLibrary::NativeDoesActorHaveTag(HitActor,WarriorGameplayTags::Enemy_Status_UnBlockable);
 
 	//如果玩家进行格挡且敌人攻击能够格挡,检测格挡是否有效
 	if (bIsPlayerBlocking&&!bIsMyAttackUnBlockable)

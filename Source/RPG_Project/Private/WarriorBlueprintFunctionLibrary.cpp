@@ -141,3 +141,15 @@ bool UWarriorBlueprintFunctionLibrary::IsBlockValid(const AActor* InAttacker,con
 	}
 	return false;
 }
+
+bool UWarriorBlueprintFunctionLibrary::ApplyGameplayEffectSpecHandleToTarget( AActor* Instigator,
+	 AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle)
+{
+	UWarriorAbilitySystemComponent* SourceASC=NativeGetWarriorAbilitySystemComponentFromActor(Instigator);
+	UWarriorAbilitySystemComponent* TargetASC=NativeGetWarriorAbilitySystemComponentFromActor(TargetActor);
+
+	FActiveGameplayEffectHandle ActiveGameplayEffectHandle=SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data,TargetASC);
+
+	return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
+
