@@ -2,6 +2,9 @@
 
 
 #include "Characters/WarriorEnemyCharacter.h"
+
+#include "WarriorBlueprintFunctionLibrary.h"
+#include "Components/BoxComponent.h"
 #include "Widgets/WarriorWidgetBase.h"
 #include "Components/WidgetComponent.h"
 #include "Components/Combat/EnemyCombatComponent.h"
@@ -38,6 +41,18 @@ AWarriorEnemyCharacter::AWarriorEnemyCharacter()
 	EnemyHealthWidgetComponent=CreateDefaultSubobject<UWidgetComponent>(TEXT("EnemyHealthWidgetComponent"));
 	EnemyHealthWidgetComponent->SetupAttachment(GetMesh());
 
+	LeftHandBoxCollision=CreateDefaultSubobject<UBoxComponent>(TEXT("LeftHandBoxCollision"));
+	LeftHandBoxCollision->SetupAttachment(GetMesh());
+	LeftHandBoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LeftHandBoxCollision->OnComponentBeginOverlap.AddUniqueDynamic(this,&ThisClass::OnBodyCollisionBoxBeginOverlap);
+
+	RightHandBoxCollision=CreateDefaultSubobject<UBoxComponent>(TEXT("RightHandBoxCollision"));
+	RightHandBoxCollision->SetupAttachment(GetMesh());
+	RightHandBoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RightHandBoxCollision->OnComponentBeginOverlap.AddUniqueDynamic(this,&ThisClass::OnBodyCollisionBoxBeginOverlap);
+
+
+
 }
 
 void AWarriorEnemyCharacter::PossessedBy(AController* NewController)
@@ -45,6 +60,27 @@ void AWarriorEnemyCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	InitEnemyStartUpData();
 }
+
+//PostEditChangeProperty函数的执行逻辑就是，我们将附加的骨骼名称设置为了EditDefaultsOnly，可以在编辑器类默认值的细节面板中进行修改
+//EditDefaultsOnly函数在我们修改类默认值细节面板时就会调用，将碰撞体附加到对应的骨骼上，整个过程完成在编辑器中完成，在运行时本就不应该保留
+#if WITH_EDITOR
+void AWarriorEnemyCharacter::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	//GET_MEMBER_NAME_CHECKED用于安全地获取某个类成员变量/函数的 FName，同时在编译期做类型检查。
+	if (PropertyChangedEvent.GetMemberPropertyName()==GET_MEMBER_NAME_CHECKED(ThisClass,LeftHandBoxCollisionAttachBoneName))
+	{
+		//吸附到目标，不包含缩放
+		LeftHandBoxCollision->AttachToComponent(GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale,LeftHandBoxCollisionAttachBoneName);
+
+	}
+	if (PropertyChangedEvent.GetMemberPropertyName()==GET_MEMBER_NAME_CHECKED(ThisClass,RightHandBoxCollisionAttachBoneName))
+	{
+		RightHandBoxCollision->AttachToComponent(GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale,RightHandBoxCollisionAttachBoneName);
+
+	}
+}
+#endif
 
 UPawnCombatComponent* AWarriorEnemyCharacter::GetPawnCombatComponent() const
 {
@@ -71,6 +107,21 @@ void AWarriorEnemyCharacter::BeginPlay()
 	}
 
 }
+
+void AWarriorEnemyCharacter::OnBodyCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	if (APawn* HitPawn=Cast<APawn>(OtherActor))
+	{
+		if (UWarriorBlueprintFunctionLibrary::IsTargetPawnHostile(this,HitPawn))
+		{
+			EnemyCombatComponent->OnHitTargetActor(HitPawn);
+		}
+	}
+}
+
+
 
 void AWarriorEnemyCharacter::InitEnemyStartUpData()
 {

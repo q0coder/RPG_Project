@@ -7,6 +7,8 @@
 #include "WarriorBlueprintFunctionLibrary.h"
 #include "WarriorDebugHelper.h"
 #include "WarriorGamplayTag.h"
+#include "Characters/WarriorEnemyCharacter.h"
+#include "Components/BoxComponent.h"
 
 void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 {
@@ -50,5 +52,37 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* HitActor)
 
 void UEnemyCombatComponent::OnWeaponPulledFromTargetActor(AActor* InteractedActor)
 {
+
+}
+
+void UEnemyCombatComponent::ToggleBodyCollisionBoxCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
+{
+	Super::ToggleBodyCollisionBoxCollision(bShouldEnable, ToggleDamageType);
+	AWarriorEnemyCharacter* OwningEnemyCharacter=Cast<AWarriorEnemyCharacter>(GetOwner());
+
+	check(OwningEnemyCharacter);
+
+	UBoxComponent* LeftHandBoxCollision=OwningEnemyCharacter->GetLeftHandBoxCollisionComponent();
+	UBoxComponent* RightHandBoxCollision=OwningEnemyCharacter->GetRightHandBoxCollisionComponent();
+
+	check(RightHandBoxCollision&&LeftHandBoxCollision);
+
+	switch (ToggleDamageType)
+	{
+
+	case EToggleDamageType::LeftHand:
+		LeftHandBoxCollision->SetCollisionEnabled(bShouldEnable?ECollisionEnabled::QueryOnly:ECollisionEnabled::NoCollision);
+		break;
+	case EToggleDamageType::RightHand:
+		RightHandBoxCollision->SetCollisionEnabled(bShouldEnable?ECollisionEnabled::QueryOnly:ECollisionEnabled::NoCollision);
+		break;
+	default:
+		break;
+	}
+
+	if (!bShouldEnable)
+	{
+		OverlappingActors.Empty();
+	}
 
 }

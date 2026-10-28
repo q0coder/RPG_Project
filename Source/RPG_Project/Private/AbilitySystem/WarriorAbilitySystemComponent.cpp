@@ -115,6 +115,7 @@ bool UWarriorAbilitySystemComponent::TryActivateAbilityByTag(FGameplayTag Abilit
 
 
 	//作用是找出包含此容器中所有标签的Ability Spec，参数1为标签容器，参数2找到的可激活技能的Spec
+	//GetSingleTagContainer获取的是传入标签的所有子标签的容器
 	GetActivatableGameplayAbilitySpecsByAllMatchingTags(AbilityTagToActivate.GetSingleTagContainer(),FoundAbilitySpecs);
 
 	if (!FoundAbilitySpecs.IsEmpty())

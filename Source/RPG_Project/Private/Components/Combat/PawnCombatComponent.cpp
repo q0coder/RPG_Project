@@ -2,6 +2,8 @@
 
 
 #include "Components/Combat/PawnCombatComponent.h"
+
+#include "WarriorDebugHelper.h"
 #include "Components/BoxComponent.h"
 #include "Items/Weapon/WarriorWeaponBase.h"
 
@@ -39,6 +41,7 @@ AWarriorWeaponBase* UPawnCombatComponent::GetCharacterCurrentEquippedWeapon() co
 {
 	if (!CurrentEquippedWeaponTag.IsValid())
 	{
+
 		return nullptr;
 	}
 	return  GetCharacterCarriedWeaponByTag(CurrentEquippedWeaponTag);
@@ -48,24 +51,38 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDama
 {
 	if (ToggleDamageType==EToggleDamageType::CurrentEquipWeapon)
 	{
-		AWarriorWeaponBase* WeaponToToggle=GetCharacterCurrentEquippedWeapon();
-
-		check(WeaponToToggle);
-
-		if (bShouldEnable)
-		{
-
-			WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-
-
-		}
-		else
-		{
-			WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			OverlappingActors.Empty();
-
-		}
+		ToggleCurrentEquipWeaponCollision(bShouldEnable);
 	}
+	else
+	{
+		ToggleBodyCollisionBoxCollision(bShouldEnable,ToggleDamageType);
+	}
+
+}
+
+void UPawnCombatComponent::ToggleCurrentEquipWeaponCollision(bool bShouldEnable)
+{
+	AWarriorWeaponBase* WeaponToToggle=GetCharacterCurrentEquippedWeapon();
+
+	check(WeaponToToggle);
+
+	if (bShouldEnable)
+	{
+
+		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+
+	}
+	else
+	{
+		WeaponToToggle->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		OverlappingActors.Empty();
+
+	}
+}
+
+void UPawnCombatComponent::ToggleBodyCollisionBoxCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
+{
 
 }
 
