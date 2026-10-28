@@ -2,6 +2,8 @@
 
 
 #include "Components/Combat/PawnCombatComponent.h"
+
+#include "WarriorDebugHelper.h"
 #include "Components/BoxComponent.h"
 #include "Items/Weapon/WarriorWeaponBase.h"
 
@@ -39,6 +41,7 @@ AWarriorWeaponBase* UPawnCombatComponent::GetCharacterCurrentEquippedWeapon() co
 {
 	if (!CurrentEquippedWeaponTag.IsValid())
 	{
+
 		return nullptr;
 	}
 	return  GetCharacterCarriedWeaponByTag(CurrentEquippedWeaponTag);
