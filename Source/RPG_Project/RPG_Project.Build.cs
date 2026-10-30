@@ -18,7 +18,8 @@ public class RPG_Project : ModuleRules
 			"AnimGraphRuntime",
 			"MotionWarping",
 			"Niagara",
-			"GameplayAbilities"
+			"GameplayAbilities",
+			"NavigationSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

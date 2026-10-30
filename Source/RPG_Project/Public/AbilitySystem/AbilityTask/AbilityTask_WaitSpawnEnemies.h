@@ -6,6 +6,10 @@
 #include "Abilities/Tasks/AbilityTask.h"
 #include "AbilityTask_WaitSpawnEnemies.generated.h"
 
+
+
+//AbilityTask 的动态多播委托是“任务对外公布的生命周期信号接口”：它只定义签名、只负责在正确时机把结果广播出去，不承载任何具体逻辑。
+///AbilityTask 的动态多播委托在蓝图中表现为执行引脚，参数表现为输出参数，代码在调用BoardCast广播动态多播委托后，执行引脚就会执行，执行引脚后面连接的函数会隐式的绑定委托
 //：UHT（Unreal Header Tool）在解析反射代码时，不允许 TArray 直接包裹一个裸的 UObject 类名，它要求必须是 TArray<UObject*> 或 TArray<UObject类名*>。
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWaitSpawnEnemiesDelegate, const TArray<AWarriorEnemyCharacter*>&,
                                             SpawnEnemies);
@@ -31,8 +35,8 @@ public:
 		TSoftClassPtr<AWarriorEnemyCharacter> SoftEnemyClassToSpawn,
 		int32 NumToSpawn,
 		const FVector& SpawnOrigin,
-		float RandomSpawnRadius,
-		const FRotator& SpawnRoration
+		float RandomSpawnRadius
+
 	);
 
 	UPROPERTY(BlueprintAssignable)
@@ -40,6 +44,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FWaitSpawnEnemiesDelegate DidNotSpawn;
+
+	//~ Begin UGameplayTask Interface
+	virtual void Activate() override;
+	virtual void OnDestroy(bool bInOwnerFinished) override;
+	//~ End UGameplayTask Interface
+
 
 private:
 	FGameplayTag CachedEventTag;
@@ -50,5 +60,10 @@ private:
 
 	float CachedRandomSpawnRadius;
 
-	FRotator CachedSpawnRoration;
+
+	FDelegateHandle DelegateHandle;
+
+	void OnGameplayEventReceive(const FGameplayEventData* InPayLoad);
+
+	void OnEnemyClassLoaded();
 };
