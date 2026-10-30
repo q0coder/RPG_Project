@@ -75,10 +75,10 @@ void AWarriorProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, 
 
 	if (bIsPlayerBlocking)
 	{
-		bISValidBlock=UWarriorBlueprintFunctionLibrary::IsBlockValid(this,HitPawn);
+		bISValidBlock=UWarriorBlueprintFunctionLibrary::IsBlockValid(GetInstigator(),HitPawn);
 	}
 	FGameplayEventData EventData;
-	EventData.Instigator=this;
+	EventData.Instigator=GetInstigator();
 	EventData.Target=HitPawn;
 
 	//如果格挡有效，处理格挡
@@ -101,7 +101,22 @@ void AWarriorProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, 
 void AWarriorProjectileBase::OnProjectileBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (OverLapActors.Contains(OtherActor))
+	{
+		return;
+	}
+	OverLapActors.AddUnique(OtherActor);
+	if (APawn* HitPawn=Cast<APawn>(OtherActor))
+	{
+		FGameplayEventData EventData;
+		EventData.Instigator=GetInstigator();
+		EventData.Target=HitPawn;
 
+		if (UWarriorBlueprintFunctionLibrary::IsTargetPawnHostile(GetInstigator(),HitPawn))
+		{
+			HandleApplyProjectileDamage(HitPawn,EventData);
+		}
+	}
 }
 
 void AWarriorProjectileBase::HandleApplyProjectileDamage(APawn* InHitPawn,const FGameplayEventData& InPayLoad)
