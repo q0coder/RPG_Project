@@ -4,6 +4,7 @@
 #include "Items/Weapon/WarriorWeaponBase.h"
 
 #include "WarriorBlueprintFunctionLibrary.h"
+#include "WarriorDebugHelper.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values
@@ -41,6 +42,7 @@ void AWarriorWeaponBase::OnCollisionBoxBeginOverlap(UPrimitiveComponent* Overlap
 		//对于敌人而言，除了要求不能碰撞到自身之外，必须不能碰撞到敌人的友方,该逻辑同时适用于玩家与敌人
 		if (UWarriorBlueprintFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn,HitPawn))
 		{
+
 			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
 
 		}

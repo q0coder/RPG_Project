@@ -21,6 +21,9 @@ namespace WarriorGameplayTags
 
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SwitchTarget);
 
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAttack_Light);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAttack_Heavy);
+
 
 
 
@@ -34,6 +37,10 @@ namespace WarriorGameplayTags
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Block);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_TargetLock);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Rage);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAttack_Heavy);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAttack_Light);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAttack_Light);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAttack_Heavy);
 
 
 
@@ -46,6 +53,7 @@ namespace WarriorGameplayTags
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
 
 
 

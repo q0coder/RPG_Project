@@ -19,7 +19,7 @@ public:
 	void OnAbilityInputReleased(const FGameplayTag& InputTag);
 
 	UFUNCTION(BlueprintCallable,Category="Warrior|Ability",meta=(Applylevel="1"))
-	void GrantHeroWeaponAbility(const TArray<FWarriorHeroAbilitySet>&InDefaultWeaponAbility,int32 ApplyLevel ,TArray<FGameplayAbilitySpecHandle>& OnGrantedAbilitySpecHandles);
+	void GrantHeroWeaponAbility(const TArray<FWarriorHeroAbilitySet>&InDefaultWeaponAbility,const TArray<FWarriorHeroSpecialAbilitySet>&InSpecialWeaponAbility,int32 ApplyLevel ,TArray<FGameplayAbilitySpecHandle>& OnGrantedAbilitySpecHandles);
 
 	//UPARAM(ref)蓝图引用传递
 	UFUNCTION(BlueprintCallable,Category="Warrior|Ability")

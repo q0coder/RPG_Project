@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "WarriorTypes/WarriorEnumTypes.h"
+
 #include "WarriorBlueprintFunctionLibrary.generated.h"
 
 struct FGameplayEffectSpecHandle;
@@ -58,5 +59,10 @@ public:
 	//在虚幻引擎的反射系统中，对于非 UObject 派生的结构体（USTRUCT，如 FGameplayEffectSpecHandle），不能将其指针暴露给蓝图函数。正确的传递方式应使用常量引用
 	UFUNCTION(BlueprintCallable,Category="Warrior|FunctionLibrary")
 	static  bool ApplyGameplayEffectSpecHandleToTarget( AActor* Instigator, AActor* TargetActor,const FGameplayEffectSpecHandle& InSpecHandle);
+
+	// 元说明符：Latent告诉蓝图编译器，这是一个异步（延迟）函数，WorldContext（也是一个元说明符）指定哪个参数作为“世界上下文对象
+	// LatentInfo,指定哪个参数是 FLatentActionInfo 结构体,ExpandEnumAsExecs将枚举展开为执行引脚（白线）,中间的 | 分隔符，左边是输入枚举参数名，右边是输出枚举参数名
+	 UFUNCTION(BlueprintCallable,Category="Warrior|FunctionLibrary",meta=(Latent,WorldContext="WorldContextObject",LatentInfo="LatentInfo",ExpandEnumAsExecs="CountDownInput|CountDownOutput",TotalTime="1.0",UpdateInterval="0.1"))
+	 static void CountDown(const UObject* WorldContextObject,float TotalTime,float UpdateInterval,float& OutRemainingTime,EWarriorCountDownActionInput CountDownInput,UPARAM(DisplayName="Output")EWarriorCountDownActionOutput& CountDownOutput,FLatentActionInfo LatentInfo);
 
 };

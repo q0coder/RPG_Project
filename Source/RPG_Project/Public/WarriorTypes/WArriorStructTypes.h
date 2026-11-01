@@ -25,6 +25,22 @@ struct FWarriorHeroAbilitySet
 
 
 };
+
+USTRUCT(BlueprintType)
+struct FWarriorHeroSpecialAbilitySet:public FWarriorHeroAbilitySet
+{
+	GENERATED_BODY()
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TSoftObjectPtr<UMaterialInterface> SoftAbilityIconMaterial;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta=(Categories="Player.Cooldown"))
+	FGameplayTag AbilityCooldownTag;
+
+
+
+
+};
+
 USTRUCT(BlueprintType)
 struct FWarriorHeroWeaponData
   {
@@ -39,6 +55,8 @@ struct FWarriorHeroWeaponData
   	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
   	TArray<FWarriorHeroAbilitySet> DefaultWeaponAbilities;
 
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TArray<FWarriorHeroSpecialAbilitySet> SpecialWeaponAbilities;
 
   	//FScalableFloat 是 GAS中用于实现数据驱动、等级化数值成长的核心结构体。它把“基础值”和“曲线表绑定在一起，
   	//同一个技能或效果在不同等级下自动产生不同的数值

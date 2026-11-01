@@ -7,7 +7,8 @@ public class RPG_Project : ModuleRules
 	public RPG_Project(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-
+		// windows.h 与虚幻引擎 GAS 插件中的 max 函数宏发生冲突，一般所有的GAS项目都需要加上PublicDefinitions.Add("NOMINMAX");
+		PublicDefinitions.Add("NOMINMAX");
 		PublicDependencyModuleNames.AddRange(new string[] { "Core",
 			"CoreUObject",
 			"Engine",
