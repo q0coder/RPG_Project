@@ -10,6 +10,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEquipWeaponChangedDelegate,TSoftObjectPtr<UTexture2D>,SoftWeaponIconTexture);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityIconSlotUpdateDelegate,FGameplayTag, AbilityInputTag,TSoftObjectPtr<UMaterialInterface>,SoftAbilityIconMaterial);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAbilityCooldownBeginDelegate,FGameplayTag, AbilityInputTag,float ,TotalCooldownTime,float,RemainCooldownTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStoneInteractDelegate,bool,bDisplayStoneConsumeInputKey);
 
 /**
  *
@@ -31,4 +32,6 @@ public:
 	UPROPERTY(BlueprintCallable,BlueprintAssignable)
 	FOnAbilityCooldownBeginDelegate OnAbilityCooldownBegin;
 
+	UPROPERTY(BlueprintCallable,BlueprintAssignable)
+	FOnStoneInteractDelegate OnStoneInteract;
 };

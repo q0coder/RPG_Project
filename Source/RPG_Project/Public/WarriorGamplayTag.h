@@ -24,6 +24,7 @@ namespace WarriorGameplayTags
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAttack_Light);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SpecialWeaponAttack_Heavy);
 
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_PickUp_Stones);
 
 
 
@@ -41,6 +42,7 @@ namespace WarriorGameplayTags
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAttack_Light);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAttack_Light);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Cooldown_SpecialWeaponAttack_Heavy);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Stones);
 
 
 
@@ -54,6 +56,7 @@ namespace WarriorGameplayTags
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Consume_Stones);
 
 
 
@@ -80,6 +83,8 @@ namespace WarriorGameplayTags
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Melee);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Ranged);
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_SummonEnemies);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_SpawnStone);
+
 
 
 	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Event_SummonEnemies);
