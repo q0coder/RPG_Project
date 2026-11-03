@@ -18,6 +18,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/Combat/HeroCombatComponent.h"
 #include "Components/UI/HeroUIComponent.h"
+#include "GameMode/WarriorSurvivalGameMode.h"
 
 AWarriorHeroCharacter::AWarriorHeroCharacter()
 {
@@ -60,7 +61,26 @@ void AWarriorHeroCharacter::PossessedBy(AController* NewController)
 	{
 		if (UDataAsset_StartUpDataBase* LoadData=CharacterStartUpData.LoadSynchronous())
 		{
-			LoadData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent);
+			int32 AbilityLevel=1;
+			if (AWarriorGameModeBase* GameMode=GetWorld()->GetAuthGameMode<AWarriorGameModeBase>() )
+			{
+				switch (GameMode->GetCurrentGameDifficulty())
+				{
+				case EWarriorGameDifficulty::Easy:
+					AbilityLevel=4;
+					break;
+				case EWarriorGameDifficulty::Normal:
+					AbilityLevel=3;
+					break;;
+				case EWarriorGameDifficulty::Hard:
+					AbilityLevel=2;
+					break;;
+				case EWarriorGameDifficulty::VeryHard:
+					AbilityLevel=1;
+					break;
+				}
+			}
+			LoadData->GiveToAbilitySystemComponent(WarriorAbilitySystemComponent,AbilityLevel);
 		}
 	}
 }

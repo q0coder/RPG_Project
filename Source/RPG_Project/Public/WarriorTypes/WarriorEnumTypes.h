@@ -40,3 +40,14 @@ enum class EWarriorCountDownActionOutput:uint8
 	Canceled
 };
 
+
+UENUM()
+enum class EWarriorGameDifficulty:uint8
+{
+	Easy,
+	Normal,
+	Hard,
+	VeryHard
+};
+
+
