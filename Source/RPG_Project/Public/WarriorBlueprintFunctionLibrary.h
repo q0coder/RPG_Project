@@ -9,6 +9,7 @@
 
 #include "WarriorBlueprintFunctionLibrary.generated.h"
 
+class UWarriorGameInstance;
 struct FGameplayEffectSpecHandle;
 struct FScalableFloat;
 class UPawnCombatComponent;
@@ -64,5 +65,17 @@ public:
 	// LatentInfo,指定哪个参数是 FLatentActionInfo 结构体,ExpandEnumAsExecs将枚举展开为执行引脚（白线）,中间的 | 分隔符，左边是输入枚举参数名，右边是输出枚举参数名
 	 UFUNCTION(BlueprintCallable,Category="Warrior|FunctionLibrary",meta=(Latent,WorldContext="WorldContextObject",LatentInfo="LatentInfo",ExpandEnumAsExecs="CountDownInput|CountDownOutput",TotalTime="1.0",UpdateInterval="0.1"))
 	 static void CountDown(const UObject* WorldContextObject,float TotalTime,float UpdateInterval,float& OutRemainingTime,EWarriorCountDownActionInput CountDownInput,UPARAM(DisplayName="Output")EWarriorCountDownActionOutput& CountDownOutput,FLatentActionInfo LatentInfo);
+
+	UFUNCTION(BlueprintPure,Category="Warrior|FunctionLibary",meta=(WorldContext="WorldContext"))
+	static UWarriorGameInstance* GetWarriorGameInStance(const UObject* WorldContext);
+
+	UFUNCTION(BlueprintCallable,Category="Warrior|FunctionLibary",meta=(WorldContext="WorldContext"))
+	static void ToggleInputMode(const UObject* WorldContext,EWarriorInputMode InputMode);
+
+	UFUNCTION(BlueprintCallable,Category="Warrior|FunctionLibary")
+	static void SaveCurrentGameDifficulty(EWarriorGameDifficulty InDifficultyToSave);
+
+	UFUNCTION(BlueprintCallable,Category="Warrior|FunctionLibary")
+	static bool LoadCurrentGameDifficulty(EWarriorGameDifficulty& OutDifficultyToLoad);
 
 };

@@ -4,6 +4,7 @@
 #include "GameMode/WarriorSurvivalGameMode.h"
 
 #include "NavigationSystem.h"
+#include "WarriorBlueprintFunctionLibrary.h"
 #include "WarriorDebugHelper.h"
 #include "Characters/WarriorEnemyCharacter.h"
 #include "Engine/AssetManager.h"
@@ -68,6 +69,16 @@ void AWarriorSurvivalGameMode::Tick(float DeltaSeconds)
 				PreLoadNextWaveEnemies();
 			}
 		}
+	}
+}
+
+void AWarriorSurvivalGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+	EWarriorGameDifficulty SavedGameDifficulty;
+	if (UWarriorBlueprintFunctionLibrary::LoadCurrentGameDifficulty(SavedGameDifficulty))
+	{
+		CurrentGameDifficulty=SavedGameDifficulty;
 	}
 }
 

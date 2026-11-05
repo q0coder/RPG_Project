@@ -71,12 +71,15 @@ void AWarriorHeroCharacter::PossessedBy(AController* NewController)
 					break;
 				case EWarriorGameDifficulty::Normal:
 					AbilityLevel=3;
+
 					break;;
 				case EWarriorGameDifficulty::Hard:
 					AbilityLevel=2;
+
 					break;;
 				case EWarriorGameDifficulty::VeryHard:
 					AbilityLevel=1;
+
 					break;
 				}
 			}

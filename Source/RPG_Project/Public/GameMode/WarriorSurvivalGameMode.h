@@ -64,6 +64,8 @@ protected:
 	//AActor::BeginPlay() 是C++中的一个 virtual 虚函数，它内部会显式地调用 ReceiveBeginPlay()
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+	//在关卡在使用Actor执行自身的初始化之前进行调用，每次我们切换Level都会进行调用
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 
 private:
 	void SetCurrentSurvivalGameModeState(EWarriorSurvivalGameModeState InState);

@@ -20,10 +20,11 @@ public class RPG_Project : ModuleRules
 			"MotionWarping",
 			"Niagara",
 			"GameplayAbilities",
-			"NavigationSystem"
+			"NavigationSystem",
+			"MoviePlayer"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PrivateDependencyModuleNames.AddRange(new string[] { "MoviePlayer", "MoviePlayer", "MoviePlayer" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

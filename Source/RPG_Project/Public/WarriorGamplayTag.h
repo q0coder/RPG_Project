@@ -115,6 +115,10 @@ namespace WarriorGameplayTags
 
 
 
+	/** GameData Tag**/
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_SurvivalGameModeMap);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_MainMenuGameModeMap);
+	RPG_PROJECT_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_1);
 
 
 

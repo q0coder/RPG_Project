@@ -6,9 +6,13 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "FWarriorCountDownAction.h"
 #include "GenericTeamAgentInterface.h"
+#include "WarriorGameInstance.h"
 #include "WarriorDebugHelper.h"
 #include "WarriorGamplayTag.h"
+#include "GameFramework/SaveGame.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "SaveGame/WarriorSaveGame.h"
 
 UWarriorAbilitySystemComponent* UWarriorBlueprintFunctionLibrary::
 NativeGetWarriorAbilitySystemComponentFromActor(AActor* InActor)
@@ -188,6 +192,76 @@ void UWarriorBlueprintFunctionLibrary::CountDown(const UObject* WorldContextObje
 			FoundAction->CancelAction();
 		}
 	}
+
+}
+
+UWarriorGameInstance* UWarriorBlueprintFunctionLibrary::GetWarriorGameInStance(const UObject* WorldContext)
+{
+	if (GEngine)
+	{
+		if (UWorld* World=GEngine->GetWorldFromContextObject(WorldContext,EGetWorldErrorMode::LogAndReturnNull))
+		{
+			return World->GetGameInstance<UWarriorGameInstance>();
+		}
+	}
+	return nullptr;
+}
+
+void UWarriorBlueprintFunctionLibrary::ToggleInputMode(const UObject* WorldContext, EWarriorInputMode InputMode)
+{
+	APlayerController* PlayerController=nullptr;
+	if (GEngine)
+	{
+		if (UWorld* World=GEngine->GetWorldFromContextObject(WorldContext,EGetWorldErrorMode::LogAndReturnNull))
+		{
+			 PlayerController=World->GetFirstPlayerController();
+		}
+	}
+
+	if (PlayerController==nullptr)
+	{
+		return;
+	}
+	FInputModeGameOnly InputModeGameOnly;
+	FInputModeUIOnly InputModeUIOnly;
+	switch (InputMode)
+	{
+	case EWarriorInputMode::GameOnly:
+		PlayerController->SetInputMode(InputModeGameOnly);
+		PlayerController->bShowMouseCursor=false;
+		break;
+	case EWarriorInputMode::UIOnly:
+		PlayerController->SetInputMode(InputModeUIOnly);
+		PlayerController->bShowMouseCursor=true;
+		break;
+	}
+
+}
+
+void UWarriorBlueprintFunctionLibrary::SaveCurrentGameDifficulty(EWarriorGameDifficulty InDifficultyToSave)
+{
+	USaveGame* SaveGame=UGameplayStatics::CreateSaveGameObject(UWarriorSaveGame::StaticClass());
+
+	if (UWarriorSaveGame* WarriorSaveGame=Cast<UWarriorSaveGame>(SaveGame))
+	{
+		WarriorSaveGame->SaveCurrentGameDifficulty=InDifficultyToSave;
+		//这里的保存方式的同步的保存，只适用于少量的游戏数据的保存，对于大量游戏数据的保存，为了防止游戏线程卡顿，我们需要使用异步保存的方式，加载游戏数据相同
+		UGameplayStatics::SaveGameToSlot(WarriorSaveGame,WarriorGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(),0);
+	}
+}
+
+bool UWarriorBlueprintFunctionLibrary::LoadCurrentGameDifficulty(EWarriorGameDifficulty& OutDifficultyToLoad)
+{
+	if (UGameplayStatics::DoesSaveGameExist(WarriorGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(),0))
+	{
+		USaveGame* SaveGame=UGameplayStatics::LoadGameFromSlot(WarriorGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(),0);
+		if (UWarriorSaveGame* WarriorSaveGame=Cast<UWarriorSaveGame>(SaveGame))
+		{
+			OutDifficultyToLoad=WarriorSaveGame->SaveCurrentGameDifficulty;
+			return true;
+		}
+	}
+	return false;
 
 }
 
